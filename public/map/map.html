@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mappa Interattiva Italia</title>
+  <style>
+    /* Stili generali per la mappa */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    /* Contenitore della mappa: centro e responsivo */
+    #map-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 100vh;
+      /* Usa il percorso assoluto / relativo al dominio */
+      background-size: cover;
+      background-position: center;
+    }
+    /* Impostazioni per la mappa, contenuta in un iframe o oggetto */
+    #map {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      /* Se preferisci mantenere un rapporto d'aspetto costante */
+      aspect-ratio: 3 / 2;
+    }
+    /* Box per la visualizzazione della regione selezionata */
+    #selected-region-box {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #f0f0f0;
+      border-left: 5px solid #007700;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #333;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      height: 150px;  /* Altezza del box */
+      width: 250px;   /* Larghezza del box */
+      margin-top: 15rem;
+      margin-left: 45rem;
+    }
+    /* Stile per il nome della regione selezionata */
+    #selected-region-name {
+      font-weight: bold;
+      color: darkgreen;
+      font-size: 1.3rem;
+    }
+    /* Stile per un eventuale testo di ricerca aggiuntivo */
+    #search-text {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    /* Stile per il bottone "Cerca" */
+    #search-button {
+      margin-top: 20px;
+      padding: 0.5rem 1rem;
+      background-color: #007700;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #search-button:hover {
+      background-color: #005500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Contenitore principale della mappa -->
+    <div id="map">
+      <!-- L'oggetto SVG: usa un percorso relativo se il file si trova in public/img -->
+      <object type="image/svg+xml" data="/img/it.svg" id="mappaItalia"></object>
+    </div>
+
+  <!-- Box per la selezione della regione -->
+  <div id="selected-region-box">
+    Regione selezionata: <span id="selected-region-name">nessuna</span>
+    <button id="search-button">Cerca</button> <!-- Bottone per avviare l'azione -->
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Oggetto mappa: associazioni tra ID dell'SVG e nomi delle regioni
+      const regionNames = {
+        IT21: "Piemonte",
+        IT23: "Valle d'Aosta",
+        IT25: "Lombardia",
+        IT32: "Trentino-Alto Adige",
+        IT34: "Veneto",
+        IT36: "Friuli Venezia Giulia",
+        IT42: "Liguria",
+        IT45: "Emilia-Romagna",
+        IT52: "Toscana",
+        IT55: "Umbria",
+        IT57: "Marche",
+        IT62: "Lazio",
+        IT65: "Abruzzo",
+        IT67: "Molise",
+        IT72: "Campania",
+        IT75: "Puglia",
+        IT77: "Basilicata",
+        IT78: "Calabria",
+        IT82: "Sicilia",
+        IT88: "Sardegna"
+      };
+
+      const svgObject = document.getElementById("mappaItalia");
+      const selectedRegionName = document.getElementById("selected-region-name");
+      const searchButton = document.getElementById("search-button");
+
+      let selectedRegionId = null; // Variabile per memorizzare la regione selezionata
+
+      svgObject.addEventListener("load", function() {
+        const svgDoc = svgObject.contentDocument;
+        const regions = svgDoc.querySelectorAll("path");
+
+        // Aggiungi evento di click per ogni regione
+        regions.forEach(region => {
+          const regionId = region.getAttribute("id");
+          const regionName = regionNames[regionId];
+
+          if (regionName) {
+            region.style.cursor = "pointer";
+
+            region.addEventListener("click", function() {
+              // Resetta il colore di tutte le regioni
+              regions.forEach(r => r.style.fill = "");
+              // Evidenzia la regione cliccata
+              region.style.fill = "darkgreen";
+              // Aggiorna il nome della regione selezionata
+              selectedRegionName.textContent = regionName;
+              // Memorizza l'ID della regione selezionata
+              selectedRegionId = regionId;
+            });
+          }
+        });
+      });
+
+      // Gestisci il click sul bottone "Cerca"
+      searchButton.addEventListener("click", function() {
+        if (selectedRegionId) {
+          const regionName = regionNames[selectedRegionId];
+          if (regionName) {
+            // Reindirizza a una pagina dedicata alla regione selezionata
+            window.location.href = `${regionName.toLowerCase()}.html`;
+          }
+        } else {
+          alert("Seleziona una regione prima di cercare.");
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

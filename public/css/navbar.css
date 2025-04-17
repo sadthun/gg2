@@ -1,0 +1,79 @@
+:root {
+    --primary: rgb(0, 86, 179);
+    --secondary: rgb(255, 255, 255);
+    --tertiary: rgba(0, 0, 0, 0.3);
+    --quaternary: green; /* Colore verde */
+    --primary-op: rgba(0, 86, 179, 0.8);
+}
+
+.bg-gradient {
+    background: var(--primary);
+    box-shadow: 0px 4px 15px var(--tertiary); /* Aggiunta un po' più di profondità */
+}
+
+/* Logo personalizzato */
+.logo {
+    height: 5rem; 
+    width: auto;
+}
+
+/* Allineamento a sinistra per la navbar */
+.navbar-brand {
+    margin-right: auto; /* Sposta il logo e la scritta a sinistra */
+}
+
+/* Testo navbar con animazioni */
+.nav-custom {
+    font-size: 1.2rem; /* Aumentato il font per maggiore visibilità */
+    font-weight: 600;  /* Più bold per dare impatto */
+    color: var(--secondary); /* Colore del testo bianco per una migliore visibilità */
+    transition: all 0.3s ease-in-out;
+    padding: 10px 15px; /* Aggiunto padding per effetto bottone */
+    margin-right: 15px; /* Aggiunto spazio tra le scritte */
+    position: relative; /* Necessario per posizionare la linea */
+}
+
+/* Linea verde sotto il testo al passaggio del mouse */
+.nav-custom::after {
+    content: ''; /* Necessario per creare un elemento pseudo */
+    color: var(--secondary);
+    display: block;
+    height: 3px; /* Altezza della linea */
+    background-color: var(--quaternary); /* Colore verde */
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0; /* Posiziona la linea sotto il testo */
+    transform: scaleX(0); /* Inizialmente non visibile */
+    transition: transform 0.3s ease-in-out; /* Transizione per l'effetto */
+}
+
+/* Effetto hover */
+.nav-custom:hover::after {
+    transform: scaleX(1); /* Mostra la linea al passaggio del mouse */
+}
+
+/* Pulsante login */
+.btn-light {
+    font-size: 1.1rem; /* Aumentato leggermente per una maggiore visibilità */
+    padding: 8px 24px; /* Più spazio per il pulsante */
+    color: var(--secondary)!important; /* Colore del testo bianco */
+    border: none; /* Rimuovi il bordo */
+    border-radius: 5px; /* Angoli arrotondati */
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-light:hover {
+    color: var(--primary)!important; /* Colore del testo primario al passaggio del mouse */
+    transform: scale(1.1); /* Effetto di ingrandimento */
+}
+
+/* Navbar-toggler personalizzato */
+.custom-toggler {
+    border: none;
+    outline: none;
+}
+
+.custom-toggler:focus {
+    box-shadow: none;
+}
